@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+		<title>Php & Ajax Crud App</title>
+	</head>
+	<body>
+		<div class="container mt-4">
+			<!-- Modal -->
+			<div id="tableManager" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h2 class="modal-title">Country Name</h2>
+						</div>
+						<div class="modal-body">
+							<label for="countryName">Country Name</label>
+							<div class="form-group">
+								<input type="text" id="countryName" class="form-control pl-2" placeholder="Country Name..." />
+							</div>
+							<label for="shortDesc">Short Description</label>
+							<div class="form-group">
+								<textarea id="shortDesc" class="form-control pl-2" placeholder="Short Country Description"></textarea>
+							</div>
+							<label for="shortDesc">Long Description</label>
+							<div class="form-group">
+								<textarea id="longDesc" class="form-control pl-2" placeholder="Long Country Description"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input onclick="manageData('addNew')" type="button" value="Save" class="btn btn-success" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<h2>MYSQL Table Manager</h2>
+					<input type="button" value="Add New" id="addNew" class="btn btn-success float-right" />
+					<div class="d-block clearfix"></div>
+					<table class="table table-hover table-bordered mt-4">
+						<thead>
+							<tr>
+								<td>ID</td>
+								<td>Country</td>
+								<td>Options</td>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<!--  jquery -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#addNew').on('click', function() {
+					$('#tableManager').modal('show');
+				});
+			});
+
+			// validate Fields
+			function isNotEmpty(caller) {
+				if (caller.val() == '') {
+					caller.css('border', ' 1px solid red');
+					return false;
+				} else {
+					caller.css('border', '');
+					return true;
+				}
+			}
+
+			function manageData(key) {
+				var name = $('#countryName');
+				var shortDesc = $('#shortDesc');
+				var longDesc = $('#longDesc');
+				if (isNotEmpty(name) && isNotEmpty(shortDesc) && isNotEmpty(longDesc)) {
+					// validated make Ajax call
+					$.ajax({
+						url: 'ajax.php',
+						method: 'POST',
+						dataType: 'text',
+						data: {
+							key: key,
+							countryName: name.val(),
+							shortDesc: shortDesc.val(),
+							longDesc: longDesc.val()
+						},
+						success: function(response) {
+							alert(response);
+						}
+					});
+				}
+			}
+		</script>
+	</body>
+</html>
