@@ -18,13 +18,14 @@ try {
 } catch (\PDOException $e) {
     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
+$rowID = 14;
 
-$countryName = 'santo domingo';
-$stmt = $pdo->prepare('SELECT * FROM country WHERE countryName = ?');
-$stmt->execute([$countryName]);
-$user = $stmt->fetch();
-print_r($user);
-// // or
-// $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND status=:status');
-// $stmt->execute(['email' => $email, 'status' => $status]);
-// $user = $stmt->fetch();
+$sql = 'SELECT countryName, shortDesc, longDesc FROM country WHERE id = :rowID';
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['rowID' => $rowID]);
+$data = $stmt->fetch(PDO::FETCH_OBJ);
+
+print_r($data);
+echo '<br>';
+echo '<br>';
+echo json_encode($data);
